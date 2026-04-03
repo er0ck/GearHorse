@@ -15,4 +15,7 @@ jobs:
       - name: Run Link Check
         uses: lycheeverse/lychee-action@v1.10.0
         with:
-          url: 'https://gearhorse.camp'
+          args: >
+            --verbose
+            --no-progress
+            https://gearhorse.camp
