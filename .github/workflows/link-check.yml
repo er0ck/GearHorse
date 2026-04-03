@@ -1,0 +1,18 @@
+name: Link Check
+
+on: 
+  pull_request: {}
+  workflow_dispatch: 
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Link Check
+        uses: lycheeverse/lychee-action@v1.10.0
+        with:
+          url: 'https://your-public-website.com'
