@@ -94,7 +94,7 @@ test('honeypot field is present but not visible to users', async ({ page }) => {
 test('reCAPTCHA script is loaded', async ({ page }) => {
   await page.goto(BASE_URL);
   const scripts = await page.locator('script').evaluateAll(els =>
-    els.map((el: HTMLScriptElement) => el.src)
+    els.map((el) => (el as HTMLScriptElement).src)
   );
   const hasRecaptcha = scripts.some(src => src.includes('recaptcha') || src.includes('google.com/recaptcha'));
   expect(hasRecaptcha).toBe(true);
