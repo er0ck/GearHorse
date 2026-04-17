@@ -1,15 +1,17 @@
 ---
 title: Honeypot Spam Protection
 type: concept
-tags: [spam, security, forms, carrd, make, honeypot, recaptcha, gearhorse]
+tags: [spam, security, forms, carrd, make, honeypot, turnstile, gearhorse]
 created: 2026-04-14
-updated: 2026-04-14
-sources: 1
+updated: 2026-04-16
+sources: 2
 ---
 
 # Honeypot Spam Protection
 
-A free, no-friction spam protection technique used in the [[Carrd Make Notion Stack]]. Combined with reCAPTCHA v3 as a two-layer defense.
+A free, no-friction spam protection technique used in the [[Carrd Make Notion Stack]].
+
+**Correction (2026-04-16):** Earlier notes described a "reCAPTCHA v3 + honeypot" two-layer setup. This was incorrect. Carrd does NOT use Google reCAPTCHA. Carrd's default spam protection is server-side heuristics including a honeypot field and timing signals. Cloudflare Turnstile is an optional add-on upgrade. Google reCAPTCHA is not involved at any layer.
 
 ---
 
@@ -63,18 +65,22 @@ The field name in Carrd must exactly match the variable reference in Make. Verif
 
 ---
 
-## Combined protection pattern
+## Actual spam protection layers (as of 2026-04-16)
 
 ```
-reCAPTCHA v3 (Carrd built-in)  ← stops most bots at the door
+Carrd server-side heuristics    ← timing, honeypot, bot fingerprinting
        +
-Honeypot field in Make          ← catches anything that slips through
+Honeypot field in Make          ← secondary filter on the automation side
+       +
+Cloudflare Turnstile (optional) ← add-on; blocks headless browsers but
+                                   also blocks Playwright-based E2E tests
 ```
 
-reCAPTCHA v3 is invisible (no user friction, background scoring). Site keys are registered to a Google account, not verified against domain ownership — any Google account can register gearhorse.camp.
+If Turnstile is enabled on the production Carrd site, Playwright E2E tests will be blocked. The clean solution: maintain a duplicate test Carrd page at an obscure slug with Turnstile disabled. See [[Brevo API Testing]] for the full E2E testing strategy.
 
 ---
 
 ## Sources
 
 - [[summary: gearhorse-tech-stack-setup]]
+- [[summary: test-brevo-CRM]]

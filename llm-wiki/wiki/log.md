@@ -13,6 +13,19 @@ Append-only chronological log of wiki activity.
 
 ---
 
+## [2026-04-16] ingest | capture-emailme-link-footer-crm + test-brevo-CRM
+
+- Ingested: `sources/capture-emailme-link-footer-crm.md`
+- Ingested: `sources/test-brevo-CRM.md`
+- Created summary pages: capture-emailme-link-footer-crm, test-brevo-CRM
+- Created concept pages: inbound-email-capture, brevo-api-testing
+- Updated concept pages: honeypot-spam-protection (corrected reCAPTCHA claim), ci-for-no-code-stack (two-tier test architecture, nightly scheduling)
+- Updated overview.md: fixed reCAPTCHA claim, added inbound email capture and Brevo testing to tech stack section
+- Updated index.md: added new concept and summary pages
+- Contradiction resolved: Carrd does not use Google reCAPTCHA. Earlier sources were wrong. Carrd uses server-side heuristics with optional Cloudflare Turnstile. Relevant pages updated and correction noted inline.
+
+---
+
 ## [2026-04-15] ingest | domain-email-infrastructure
 
 - Ingested: `sources/domain-email-infrastructure.md`

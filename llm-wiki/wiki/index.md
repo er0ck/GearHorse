@@ -3,7 +3,7 @@ title: Index
 type: index
 tags: [index, catalog]
 created: 2026-04-14
-updated: 2026-04-14
+updated: 2026-04-16
 sources: 0
 ---
 
@@ -46,13 +46,15 @@ Complete catalog of all pages in this wiki.
 ### Tech Stack
 - [[Carrd Make Notion Stack]] — Near-free no-code marketing + CRM stack (Carrd + Make + Notion + Brevo)
 - [[UTM Tracking]] — Carrd hidden fields → Make → Notion CRM property mapping
-- [[Honeypot Spam Protection]] — Hidden form field + Make filter + reCAPTCHA v3, two-layer bot protection
+- [[Honeypot Spam Protection]] — Server-side heuristics + Make filter; Cloudflare Turnstile optional (not reCAPTCHA)
 
 ### Infrastructure
 - [[Domain and Email Infrastructure]] — Domain registrar options, email hosting (ImprovMX/Zoho/Migadu), DNS integration with Carrd and Shopify
+- [[Inbound Email Capture]] — Make + Gmail watches hello@gearhorse.camp, pushes direct emailers to Brevo
 
 ### Engineering
-- [[CI for No-Code Stack]] — GitHub Actions (lychee + Playwright) testing Carrd forms and Notion CRM integration
+- [[CI for No-Code Stack]] — Two-tier GitHub Actions: API-only per push, Playwright E2E nightly
+- [[Brevo API Testing]] — Brevo API contract, test isolation strategy, gotchas, no-sandbox workarounds
 
 ---
 
@@ -63,6 +65,8 @@ Complete catalog of all pages in this wiki.
 - [[summary: gearhorse-tech-stack-setup]] — Full tech stack setup guide: Carrd → Make → Notion, UTM, spam protection
 - [[summary: testing-carrd-make-notion-github-actions]] — GitHub Actions testing for Carrd/Make/Notion stack with Playwright
 - [[summary: domain-email-infrastructure]] — Domain registrars, email hosting options, DNS integration, TLD watch-outs
+- [[summary: capture-emailme-link-footer-crm]] — Make + Gmail flow to capture direct emailers into Brevo CRM
+- [[summary: test-brevo-CRM]] — Two-tier Brevo testing: API-only canary + nightly Playwright E2E; isolation, gotchas, CAPTCHA reality
 
 ---
 

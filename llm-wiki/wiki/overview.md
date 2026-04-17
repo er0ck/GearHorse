@@ -3,8 +3,8 @@ title: Overview
 type: overview
 tags: [gearhorse, overview, synthesis]
 created: 2026-04-14
-updated: 2026-04-14
-sources: 4
+updated: 2026-04-16
+sources: 6
 ---
 
 # Gear Horse Wiki — Overview
@@ -47,13 +47,15 @@ The Gear Horse-specific subscription model: quarterly consumables (seasoning oil
 
 [[UTM Tracking]] is wired from day one: hidden Carrd fields capture UTM params from URL query strings, Make maps them to Notion, a Formula property produces a readable source/medium label in the CRM view.
 
-[[Honeypot Spam Protection]] combined with reCAPTCHA v3 provides free, two-layer bot protection with no user friction.
+[[Honeypot Spam Protection]] provides free, no-friction bot protection via server-side heuristics and a Make-side filter. Cloudflare Turnstile is an optional Carrd upgrade. Carrd does NOT use Google reCAPTCHA.
 
-[[CI for No-Code Stack]] uses GitHub Actions (free tier) to test the full form-to-Notion flow weekly, with a timestamped unique email per run as the key isolation pattern.
+[[Inbound Email Capture]] is a second acquisition channel: visitors who email `hello@gearhorse.camp` directly are pushed into Brevo via Make watching Gmail, using the existing ImprovMX forwarding chain. No Carrd changes required.
+
+[[CI for No-Code Stack]] uses GitHub Actions (free tier) to test the stack in two tiers: a fast Brevo API-only test on every push (~2s), and a full Playwright E2E run nightly (~30–60s). The API-only test is the primary fast canary; the E2E catches Carrd-side regressions. See [[Brevo API Testing]] for test isolation strategy, attribute pre-flight setup, and Brevo API gotchas.
 
 ---
 
-## Current state (as of 2026-04-14)
+## Current state (as of 2026-04-16)
 
 - Brand name, domain, and tagline: decided
 - Products: defined, not yet manufactured or prototyped

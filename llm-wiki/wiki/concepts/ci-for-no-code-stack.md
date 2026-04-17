@@ -1,10 +1,10 @@
 ---
 title: CI for No-Code Stack
 type: concept
-tags: [testing, ci-cd, github-actions, playwright, notion-api, lychee, carrd, make, gearhorse]
+tags: [testing, ci-cd, github-actions, playwright, notion-api, brevo, lychee, carrd, make, gearhorse]
 created: 2026-04-14
-updated: 2026-04-14
-sources: 1
+updated: 2026-04-16
+sources: 2
 ---
 
 # CI for No-Code Stack
@@ -25,12 +25,16 @@ Even though none of the tools require code to configure, they can break silently
 
 ## Test layer map
 
-| Concern | Tool |
-|---|---|
-| Links resolve correctly | `lychee` via `lycheeverse/lychee-action` |
-| Forms submit correctly | Playwright |
-| Make automation fires | Playwright + `waitForTimeout` |
-| Notion CRM populates | Notion JS client + assertions |
+| Concern | Tool | Frequency |
+|---|---|---|
+| Links resolve correctly | `lychee` via `lycheeverse/lychee-action` | Per push |
+| Brevo API contract valid | Brevo API-only spec (`brevo-client.ts`) | Per push (~2s) |
+| Forms submit correctly | Playwright E2E | Nightly |
+| Make automation fires | Playwright + `waitForResponse` | Nightly |
+| Brevo contact created with UTMs | Brevo API poll after E2E submit | Nightly |
+| Notion CRM populates | Notion JS client + assertions | On-demand |
+
+The Brevo API-only test is now the primary fast canary. See [[Brevo API Testing]] for full details on the two-tier (API-only + E2E) approach.
 
 ---
 
@@ -78,20 +82,30 @@ Well within free tier (2,000 min/month). Weekly runs use approximately 15 minute
 
 ---
 
+## Scheduling: nightly, not per-commit
+
+Running the E2E test on every push has no signal value for a static Carrd landing page. The failures that matter come from third parties: Carrd pushing an update, Brevo rotating something, DNS issues, an expired API key. A nightly cron catches these. Commit-triggered runs don't add signal because no code change in the repo affects the Carrd or Brevo production environments.
+
+Add an hourly API-only run when paid ads are live and a broken form has immediate financial cost.
+
+---
+
 ## Future enhancements
 
-- Screenshot on failure: `use: { screenshot: 'only-on-failure' }` in `playwright.config.js`
-- Failure alerts: notification step on job failure (Slack, email, etc.)
+- Screenshot on failure: `use: { screenshot: 'only-on-failure' }` in `playwright.config.ts`
+- Failure alerts: Slack webhook notification on job failure
 - Smoke test on deploy: trigger `workflow_dispatch` manually after any Carrd update
+- Weekly cleanup cron: delete contacts where `IS_TEST_CONTACT=true` as a safety net for `finally`-block misses
 
 ---
 
 ## Connection to Gear Horse
 
-[[Gear Horse]] uses this pattern. The `gearhorse` GitHub repo contains the two workflow files. See [[summary: testing-carrd-make-notion-github-actions]] for full workflow code.
+[[Gear Horse]] uses this pattern. The `gearhorse` GitHub repo contains the workflow files. See [[summary: testing-carrd-make-notion-github-actions]] for the original Notion-centric workflow and [[summary: test-brevo-CRM]] for the Brevo-centric two-tier approach.
 
 ---
 
 ## Sources
 
 - [[summary: testing-carrd-make-notion-github-actions]]
+- [[summary: test-brevo-CRM]]
